@@ -1,0 +1,12 @@
+{
+  "name": "hometask1",
+  "version": "1.0.0",
+  "description": "HomeTask 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "task1": "node test1.js"
+  },
+  "author": "Oleg D.",
+  "license": "ISC"
+}
