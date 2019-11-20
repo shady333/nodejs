@@ -1,7 +1,3 @@
-// "use strict";
-
-// var readline = require('readline');
-
 import readline from 'readline';
 
 var rl = readline.createInterface({

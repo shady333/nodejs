@@ -1,5 +1,3 @@
-// "use strict";
-
 import csv from 'csvtojson';
 import fs from 'fs';
 
