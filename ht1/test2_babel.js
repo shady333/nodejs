@@ -1,9 +1,9 @@
-"use strict";
+// "use strict";
 
 import csv from 'csvtojson';
 import fs from 'fs';
 
-var resultFile = 'results_babel.txt';
+var resultFile = 'results.txt';
 var csvFilePath = './csv/input_file.csv';
 
 try {

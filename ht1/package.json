@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "description": "HomeTask 1",
   "main": "index.js",
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "task1": "node test1.js",
     "task2": "node test2.js",
-    "task1-babel": "node start1.js",
-    "task2-babel": "node start2.js"
+    "b_task1": "babel-node test1_babel.js",
+    "b_task2": "babel-node test2_babel.js",
+    "babel-version": "babel --version",
+    "babel-node-version": "babel-node --version"
   },
   "author": "Oleg D.",
   "license": "ISC",
@@ -20,7 +26,6 @@
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/register": "^7.7.0",
-    "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0"
   }
 }
