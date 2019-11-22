@@ -16,13 +16,13 @@ try {
 
 csv()
 .fromFile(csvFilePath)
-.then(function(jsonArrayObj){
-    jsonArrayObj.forEach(function(row) {
+.then((jsonArrayObj) => {
+    jsonArrayObj.forEach((row) => {
         fs.appendFile(resultFile, JSON.stringify(row)+'\n', (err)=>{
             if(err)
                 console.log(err)
         })
     })
-  }).then(function(){
+  }).then(() => {
       console.log('Completed.')
   })

@@ -9,7 +9,7 @@ var rl = readline.createInterface({
 console.log("Welcome!");
 console.log("Type 'exit' - to stop");
 
-rl.on('line', function(line){
+rl.on('line', (line) => {
     if(line == "exit")
     {
         process.exit();

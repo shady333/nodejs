@@ -7,7 +7,7 @@ var csvFilePath = './csv/input_file.csv';
 try {
   if (fs.existsSync(resultFile)) {
     console.log('Results file exist. Deleting file ...');
-    fs.truncate(resultFile, 0, function (err) {
+    fs.truncate(resultFile, 0, (err) => {
       console.log(err);
     });
   }
@@ -15,12 +15,12 @@ try {
   console.error(err);
 }
 
-csv().fromFile(csvFilePath).then(function (jsonArrayObj) {
-  jsonArrayObj.forEach(function (row) {
-    fs.appendFile(resultFile, JSON.stringify(row) + '\n', function (err) {
+csv().fromFile(csvFilePath).then((jsonArrayObj) => {
+  jsonArrayObj.forEach((row) => {
+    fs.appendFile(resultFile, JSON.stringify(row) + '\n', (err) => {
       if (err) console.log(err);
     });
   });
-}).then(function () {
+}).then(() => {
   console.log('Completed.');
 });
