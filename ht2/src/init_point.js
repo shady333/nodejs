@@ -39,13 +39,17 @@ app.post('/users', (req, res) => {
 app.put('/users/:userId', (req, res) => {
 
     try {
-        const user = users.findOne({id : req.params.userId});
-        user.login = req.body.login;
-
-        user.save();
-        res.send(user)
+        if(users[req.params.userId] == undefined){
+            res.send('Cant find user\n'+req.body)
+        }
+        else{
+            users[req.params.userId].login = req.body.login
+            users[req.params.userId].password = req.body.password
+            users[req.params.userId].age = req.body.age
+            res.send(users[req.params.userId])
+        }
     } catch (err) {
-        res.send('ERROR OCCURED')
+        res.send('ERROR OCCURED\n'+err)
     }
 })
 
