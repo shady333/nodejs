@@ -17,14 +17,6 @@ const port = 3000
 
 let users = []
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
-app.get('/bad', (req, res) => {
-    res.status(400).end('Bad request')
-})
-
 app.get('/users', (req, res) => {
     return res.send(Object.values(users));
 })
@@ -40,7 +32,7 @@ app.get('/users/:userId', (req, res) => {
 })
 
 app.get('/select', (req, res) => {
-    return res.send(Object.values(getAutoSuggestUsers(req.query.name, req.query.length)));
+    return res.send(Object.values(getAutoSuggestUsers(req.query.login, req.query.count)));
 })
 
 app.post('/users', validator.body(querySchema), (req, res) => {

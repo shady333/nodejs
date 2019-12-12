@@ -31,8 +31,13 @@ Delete User
 curl -X DELETE http://localhost:3000/users/2cee3328-baf4-42d3-81ab-d9a66ae1bc1f
 ```
 
+Auto suggest users
+```
+localhost:3000/select?login=login&count=100
+```
+
 # Task 2.2
-All fields are required: login, password and age
-Login validation
-Password validation
-Age validation
+* All fields are required: login, password and age
+* Login validation
+* Password validation
+* Age validation
