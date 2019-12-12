@@ -86,13 +86,12 @@ app.delete('/users/:userId', (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`My task app listening on port ${port}!`))
 
 function getAutoSuggestUsers(loginSubString, limit){
     return _.first(users.filter(entry => entry.login.includes(loginSubString)), limit)
 }
 
 function getUserPosition(id){
-    let position = users.findIndex((element) => element.id == id)
-    return position
+    return users.findIndex((element) => element.id == id)
 }
