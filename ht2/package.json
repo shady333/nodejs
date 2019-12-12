@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "babel-node ./src/init_point.js",
+    "debug": "babel-node debug ./src/init_point.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "OlegD",
@@ -19,12 +20,16 @@
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/register": "^7.7.0",
-    "babel-preset-env": "^1.7.0",
+    "chai": "^4.2.0",
     "eslint": "^6.7.2",
+    "mocha": "^6.2.2",
     "nodemon": "^2.0.1",
+    "underscore": "^1.9.1",
     "uuid": "^3.3.3"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "@hapi/joi": "^16.1.8",
+    "express": "^4.17.1",
+    "express-joi-validation": "^4.0.3"
   }
 }

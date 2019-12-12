@@ -1,7 +1,15 @@
 import express from 'express'
 import uuidv4 from 'uuid/v4'
-import { EDESTADDRREQ } from 'constants'
-// const express = require('express')
+import _ from 'underscore'
+import Joi from '@hapi/joi'
+import validator_joi from 'express-joi-validation'
+
+const validator = validator_joi.createValidator({})
+const querySchema = Joi.object({
+    login: Joi.string().alphanum().min(3).max(30).required(),
+    password: Joi.string().pattern(/^[a-zA-Z0-9]{3,30}$/).required(),
+    age: Joi.number().min(4).max(130).required()
+})
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -13,17 +21,30 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
+app.get('/bad', (req, res) => {
+    res.status(400).end('Bad request')
+})
+
 app.get('/users', (req, res) => {
     return res.send(Object.values(users));
 })
 
 app.get('/users/:userId', (req, res) => {
-    return res.send(users[req.params.userId]);
+    const userIndex = getUserPosition(req.params.userId)
+    if(userIndex == -1){
+        return res.send('Cant find user\n'+req.body)
+    }
+    else{
+        return res.send(Object.values(users[userIndex]))
+    }
 })
 
-app.post('/users', (req, res) => {
-    const id = uuidv4();
-    
+app.get('/select', (req, res) => {
+    return res.send(Object.values(getAutoSuggestUsers(req.query.name, req.query.length)));
+})
+
+app.post('/users', validator.body(querySchema), (req, res) => {
+    const id = uuidv4()
     const user = {
         id,
         login: req.body.login,
@@ -31,30 +52,47 @@ app.post('/users', (req, res) => {
         age: req.body.age,
         isDeleted: false
     }
-
-    users[id] = user;
-    return res.send(users)
+    users.push(user);
+    return res.send("User\n"+Object.values(user)+"\nwas added to the users list")
 })
 
-app.put('/users/:userId', (req, res) => {
+app.put('/users/:userId', validator.body(querySchema), (req, res) => {
 
-    try {
-        if(users[req.params.userId] == undefined){
-            res.send('Cant find user\n'+req.body)
-        }
-        else{
-            users[req.params.userId].login = req.body.login
-            users[req.params.userId].password = req.body.password
-            users[req.params.userId].age = req.body.age
-            res.send(users[req.params.userId])
-        }
-    } catch (err) {
-        res.send('ERROR OCCURED\n'+err)
+    const userIndex = getUserPosition(req.params.userId)
+    if(userIndex == -1){
+        res.send('Cant find user\n'+req.body)
+    }
+    else{
+        if(req.body.login)
+            users[userIndex].login = req.body.login
+        if(req.body.password)
+            users[userIndex].password = req.body.password
+        if(req.body.age)
+            users[userIndex].age = req.body.age
+        if(req.body.isDeleted)
+            users[userIndex].isDeleted = req.body.isDeleted
+        res.send(users[req.params.userId])
     }
 })
 
 app.delete('/users/:userId', (req, res) => {
-    return res.send('PUT request at /users/${req.params.userId}')
+    const userIndex = getUserPosition(req.params.userId)
+    if(userIndex == -1){
+        return res.send('Cant find user with Id - \n'+req.params.userId)
+    }
+    else{
+        users[userIndex].isDeleted = true
+        return res.send('PUT request at /users/${req.params.userId}')
+    }
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+function getAutoSuggestUsers(loginSubString, limit){
+    return _.first(users.filter(entry => entry.login.includes(loginSubString)), limit)
+}
+
+function getUserPosition(id){
+    let position = users.findIndex((element) => element.id == id)
+    return position
+}
