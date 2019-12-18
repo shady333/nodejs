@@ -17,30 +17,22 @@ const port = 3000
 
 let users = []
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
-app.get('/bad', (req, res) => {
-    res.status(400).end('Bad request')
-})
-
 app.get('/users', (req, res) => {
-    return res.send(Object.values(users));
+    return res.send(users);
 })
 
-app.get('/users/:userId', (req, res) => {
+app.get('/find/:userId', (req, res) => {
     const userIndex = getUserPosition(req.params.userId)
     if(userIndex == -1){
         return res.send('Cant find user\n'+req.body)
     }
     else{
-        return res.send(Object.values(users[userIndex]))
+        return res.send(users[userIndex])
     }
 })
 
 app.get('/select', (req, res) => {
-    return res.send(Object.values(getAutoSuggestUsers(req.query.name, req.query.length)));
+    return res.send(Object.values(getAutoSuggestUsers(req.query.login, req.query.count)));
 })
 
 app.post('/users', validator.body(querySchema), (req, res) => {
@@ -56,7 +48,7 @@ app.post('/users', validator.body(querySchema), (req, res) => {
     return res.send("User\n"+Object.values(user)+"\nwas added to the users list")
 })
 
-app.put('/users/:userId', validator.body(querySchema), (req, res) => {
+app.put('/update/:userId', validator.body(querySchema), (req, res) => {
 
     const userIndex = getUserPosition(req.params.userId)
     if(userIndex == -1){
@@ -75,7 +67,7 @@ app.put('/users/:userId', validator.body(querySchema), (req, res) => {
     }
 })
 
-app.delete('/users/:userId', (req, res) => {
+app.delete('/delete/:userId', (req, res) => {
     const userIndex = getUserPosition(req.params.userId)
     if(userIndex == -1){
         return res.send('Cant find user with Id - \n'+req.params.userId)
@@ -86,13 +78,19 @@ app.delete('/users/:userId', (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.delete('/destroy', (req, res) => {
+    users = []
+    return res.send('All users were destroyed')
+})
+
+app.listen(port, () => console.log(`My task app listening on port ${port}!`))
 
 function getAutoSuggestUsers(loginSubString, limit){
     return _.first(users.filter(entry => entry.login.includes(loginSubString)), limit)
 }
 
 function getUserPosition(id){
-    let position = users.findIndex((element) => element.id == id)
-    return position
+    return users.findIndex((element) => element.id == id)
 }
+
+module.exports = app;
